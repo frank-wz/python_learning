@@ -1,0 +1,86 @@
+1 内容回顾
+    1 预备知识
+        1 JSON格式
+        2 python中操作JSON数据
+            1 json.dump()/json.dumps()
+            2 json.load()/json.loads()
+        3 JS中错做JSON数据
+            1 JSON.parse()
+            2 JSON.stringify()
+    2 浏览器给服务端发请求的方式
+        1 浏览器地址栏输入URL回车         GET
+        2 a标签                         GET
+        3 form表单                      GET/POST
+        4 AJAX                          GET/POST
+    3 AJAX定义
+        1 异步的JavaScript和XML
+    4 AJAX的优劣势
+        1 优势
+            1 异步
+            2 页面不刷新也不跳转，偷偷发请求（某些场景下用户体验好）
+        2 劣势
+            1 AJAX滥用对服务端压力比较大
+        3 AJAX的局部刷新？
+            ajax请求拿到数据之后，我们通过JS的DOM操作去修改页面的内容 给用户一种局部刷新的错觉！
+    5 原生JS实现的AJAX（了解）******
+    6 jQuery实现AJAX
+        $.ajax({
+            url:'',
+            type:'',
+            data:{},
+            success:function(){},
+            error:function(){}
+        })
+    7 Django项目中ajax如何处理csrftoken
+        1 在页面上写一个{% csrf_token %}, 我们使用JS获取其值，然后放到我们要提交的POST数据中
+    8 AJAX如何上传文件
+        利用FormData对象
+        1 var fdObj = new FormData();
+        fdObj.append('key', value);
+        fdObj.append('file', $('#f1')[0].files[0])
+        fdObj.append('csrfmiddlewaretoken',$('[name="csrfmiddlewaretoken"]').val())
+        $.ajax({
+            url:'',
+            type:'',
+            processData:false,
+            contentType: false,
+            data:fdObj,
+            success:function(){}
+        })
+
+2 今日内容
+    1 ajax的异步
+        1 ajax可以发get请求
+        2 异步请求
+    2 复习了Bootstrap和jQuery
+        1 使用模态框编辑出版社
+            1 Bootstr样式
+            2 JQuery选择器
+            3 jQuery操作标签
+        2 sweetalert的使用
+            1 用法
+                1 下载插件
+                2 解压 --> dist目录下的内容
+                3 拷贝到Django项目的static文件夹下
+                4 在HTML页面上调入sweetalert.css和sweetalert.js
+            2 弹框
+                1 简写： seal('tittle','text','type')
+                2 带二次确认的
+                    见今日示例代码
+    3 Cookie
+        1 HTTP请求是无状态的
+            1 每一次请求对服务端来说都是独立的
+        2 如何保存请求的状态？
+            Cookie就是服务端给浏览器的小纸条！
+        3 什么是Cookie？
+            1 保存在浏览器端的键值对
+        4 Django中操作Cookie
+            1 设置Cookie
+                1 针对响应对象做操作
+                2 set_cookie('key','value')
+            2 读取Cookie
+                1 request.COOKIES               --> 大字典
+                1 request.COOKIES.get('key')    --> 取值
+3 今日作业
+    1 自己写Cookie版登录页面
+        加7天免登录

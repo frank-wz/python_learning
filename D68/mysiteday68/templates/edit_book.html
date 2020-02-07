@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>编辑书籍</title>
+</head>
+<body>
+<form action="" method="post">
+    <input type="text" name="title" value="{{ book.title }}">
+    <select name="">
+        {% for publisher in publisher_list %}
+            {# 如果当前for循环的出版社id和编辑的这本书的出版社id相等#}
+            {% if publisher.id == book.publisher.id %}
+            <option selected value="{{ publisher.id }}">{{ publisher.name }}</option>
+            {# 否则#}
+            {% else %}
+            <option value="{{ publisher.id }}">{{ publisher.name }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+    <button type="submit">提交</button>
+
+</form>
+
+
+</body>
+</html>

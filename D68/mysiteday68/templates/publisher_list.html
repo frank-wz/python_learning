@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/static/bootstrap-3.3.7/css/bootstrap.css" rel="stylesheet">
+</head>
+<body>
+
+<a href="/add_publisher/">添加出版社</a>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>序号</th>
+        <th>id</th>
+        <th>出版社名称</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    {% for publisher in publisher_list %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ publisher.id }}</td>
+            <td>{{ publisher.name }}</td>
+            <td>
+                <button type="button" class="btn btn-sm ben-success edit-btn">删除</button>
+                <button type="button" class="btn btn-sm ben-success edit-btn">修改</button>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{# 模态框 #}
+<div class="modal fade" tabindex="-1" role="dialog" id="qs-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">修改出版社</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="publisher_name">出版社</label>
+            <input type="text" class="form-control" id="publisher_name" placeholder="publisher_name">
+          </div>
+        </form>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" id="modal-save">保存</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<script src="/static/jQuery.js"></script>
+<script src="/static/bootstrap-3.3.7/js/bootstrap.js"></script>
+<script>
+    // 找到页面上所有的 .edit-btn 按钮 绑定点击事件
+    $('table').on('click','.edit-btn',function () {
+        //弹出模态框
+        // 拿到要编辑的出版社的id值
+        var editId = $(this).parent().prev().prev().text();
+        var $inoutEle = $('#publisher_name');
+        // 给模态框中的input标签加一个自定义属性：publisher-id
+        $inoutEle.attr('publisher-id',editId);
+        var pName = $(this).parent().prev().text();
+        $inoutEle.val(pName);
+        $('#qs-modal').modal('show');
+    });
+    // 给模态框上的保存按钮绑定事件
+    $('#modal-save').click(function () {
+        // 获取要编辑的出版社的id值和新名称
+        var $inoutEle = $('#publisher_name');
+        var eidtId = $inoutEle.attr('publisher-id');
+        var newName = $inoutEle.val();
+        // 发送ajax请求
+        $.ajax({
+            url:'/edit_publisher/',
+            type:'post',
+            data:{'id':eidtId,'new_name':newName},
+            success: function (res) {
+                //编辑成功之后
+                if (res.code === 0){
+                    location.href=res.next_url;
+                }
+            }
+        })
+    })
+</script>
+
+</body>
+</html>
